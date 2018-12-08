@@ -10,6 +10,6 @@ Particle::Particle(const Vector3 &location, const Vector3 &velocity,
     double mass, double charge) :
     location(location), velocity(velocity), mass(mass), charge(charge) {}
 
-void ApplyAcceleration(Vector3 acceleration) {
-    // MOVIDA.
+void Particle::ApplyAcceleration(Vector3 acceleration) {
+    
 }

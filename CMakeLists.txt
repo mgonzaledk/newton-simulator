@@ -5,6 +5,16 @@ set(CMAKE_CPP_STANDARD 11)
 
 add_executable(newton-simulator
     Main.cpp
-    Vector3.cpp)
+    Vector3.cpp
+    Particle.cpp
+    Universe.cpp)
 
-target_link_libraries(newton-simulator m)
+find_package(OpenGL REQUIRED)
+find_package(GLUT REQUIRED)
+
+include_directories(${OPENGL_INCLUDE_DIRS}
+    ${GLUT_INCLUDE_DIRS})
+
+target_link_libraries(newton-simulator m
+    ${OPENGL_LIBRARIES}
+    ${GLUT_LIBRARY})
