@@ -34,33 +34,33 @@ Universe::Universe(unsigned int width, unsigned int height) {
 
 void Universe::DrawAxis() {
     glColor3f(0.0, 0.0, 0.0);
-	glLineWidth(1);
+    glLineWidth(1);
 
-	glBegin(GL_LINES);
+    glBegin(GL_LINES);
 	
     // Eje X.
     glVertex2f(-1., .0);
-	glVertex2f(1., .0);
+    glVertex2f(1., .0);
 
     // Eje Y.
-	glVertex2f(.0, -1.);
-	glVertex2f(.0, 1.);
+    glVertex2f(.0, -1.);
+    glVertex2f(.0, 1.);
 
     // Linea eje X negativo.
-	glVertex2f(-0.95, .05);
-	glVertex2f(-0.95, -.05);
+    glVertex2f(-0.95, .05);
+    glVertex2f(-0.95, -.05);
 
     // Linea eje X positivo.
-	glVertex2f(.95, .05);
-	glVertex2f(.95, -.05);
+    glVertex2f(.95, .05);
+    glVertex2f(.95, -.05);
 
     // Linea eje Y negativo.
-	glVertex2f(.05, -.95);
-	glVertex2f(-.05, -.95);
+    glVertex2f(.05, -.95);
+    glVertex2f(-.05, -.95);
 
     // Linea eje Y positivo.
-	glVertex2f(.05, .95);
-	glVertex2f(-.05, .95);
+    glVertex2f(.05, .95);
+    glVertex2f(-.05, .95);
 	
     glEnd();
 }
