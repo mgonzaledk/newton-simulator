@@ -17,7 +17,15 @@ class Particle {
         Particle(const Vector3 &location, const Vector3 &velocity, double mass,
             double charge);
 
-        void ApplyAcceleration(Vector3 acceleration);
+        Vector3 GetLocation() const;
+        Vector3 GetVelocity() const;
+        double GetMass() const;
+        double GetCharge() const;
+
+        Particle ApplyAcceleration(Vector3 acceleration);
+
+        Particle operator*(double constant);
+        Particle operator+(const Particle &particle);
 };
 
 #endif

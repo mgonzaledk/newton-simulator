@@ -10,6 +10,40 @@ Particle::Particle(const Vector3 &location, const Vector3 &velocity,
     double mass, double charge) :
     location(location), velocity(velocity), mass(mass), charge(charge) {}
 
-void Particle::ApplyAcceleration(Vector3 acceleration) {
-    
+Vector3 Particle::GetLocation() const {
+    return location;
+}
+
+Vector3 Particle::GetVelocity() const {
+    return velocity;
+}
+
+double Particle::GetMass() const {
+    return mass;
+}
+
+double Particle::GetCharge() const {
+    return charge;
+}
+
+Particle Particle::ApplyAcceleration(Vector3 acceleration) {
+    return Particle(velocity, acceleration, .0, .0);
+}
+
+Particle Particle::operator*(double constant) {
+    return Particle(
+        location * constant,
+        velocity * constant,
+        mass * constant,
+        charge * constant
+    );
+}
+
+Particle Particle::operator+(const Particle &particle) {
+    return Particle(
+        location + particle.location,
+        velocity + particle.velocity,
+        mass + particle.mass,
+        charge + particle.charge
+    );
 }

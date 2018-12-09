@@ -18,6 +18,7 @@ class Universe {
         Universe();
         Universe(unsigned int width, unsigned int height);
 
+        void UpdateParticles(double multiplier = 1);
         void Loop();
 };
 

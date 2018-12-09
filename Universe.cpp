@@ -1,3 +1,6 @@
+#include <chrono>
+#include <cmath>
+
 #include "Graphics.h"
 
 #include "Universe.h"
@@ -14,8 +17,59 @@ Universe::Universe(unsigned int width, unsigned int height) {
     minAxisZ = -.1, maxAxisZ = .1;
 }
 
-void Universe::Loop() {
-    while(1) {
-        Graphics::Update();
+void Universe::UpdateParticles(double multiplier) {
+    std::vector<Vector3> acceleration;
+
+    for(size_t i = 0; i < particles.size(); ++i) {
+        acceleration.push_back(Vector3());
+
+        for(size_t j = 0; i < particles.size(); ++j) {
+            if(i == j) continue;
+
+            acceleration[i] += 
+                (particles[j].GetLocation() - particles[j].GetLocation()) *
+                (
+                    ((1 / particles[i].GetMass()) * (1 / (4 * C_PI * C_K)) *
+                    particles[i].GetCharge() * particles[j].GetCharge()
+                ) / std::pow(
+                    (particles[i].GetLocation() - particles[j].GetLocation()).Module(),
+                    1.5
+                ));
+            
+            acceleration[i] +=
+                (particles[j].GetLocation() - particles[i].GetLocation()) *
+                (C_G * particles[j].GetMass() / std::pow((particles[i].GetLocation() - particles[j].GetLocation()).Module(), 1.5));
+        }
     }
+
+    for(size_t i = 0; i < particles.size(); ++i) {
+        Particle sum[4];
+
+        sum[0] = particles[i].ApplyAcceleration(acceleration[i]);
+        sum[1] = (particles[i] + sum[0] * (multiplier / 2)).ApplyAcceleration(acceleration[i]);
+        sum[2] = (particles[i] + sum[1] * (multiplier / 2)).ApplyAcceleration(acceleration[i]);
+        sum[3] = (particles[i] + sum[2] * multiplier).ApplyAcceleration(acceleration[i]);
+        
+        particles[i] = particles[i] + (sum[0] + sum[1] * 2 + sum[2] * 2 + sum[3]) * (multiplier / 6);
+    }
+}
+
+void Universe::Loop() {
+    std::chrono::duration<int, std::milli> waitTime =
+        std::chrono::duration<int, std::milli>(15);
+
+    std::chrono::system_clock::time_point currentTime;
+    std::chrono::system_clock::time_point beforeTime =
+        std::chrono::system_clock::now();
+
+    do {
+        currentTime = std::chrono::system_clock::now();
+
+        if(currentTime - beforeTime > waitTime) {
+            beforeTime = currentTime;
+            Graphics::Update();
+        }
+
+        UpdateParticles();
+    } while(1);
 }
