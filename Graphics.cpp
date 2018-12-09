@@ -5,6 +5,8 @@
 
 #include "Graphics.h"
 
+std::vector<Graphics::Point> Graphics::points;
+
 void Graphics::Init(unsigned int width, unsigned int height) {
     // Argumentos específicos de OPENGL.
     char *argv[1];
@@ -22,6 +24,14 @@ void Graphics::Init(unsigned int width, unsigned int height) {
     glClearColor(1, 1, 1, .0);
     glClear(GL_COLOR_BUFFER_BIT);
     glPointSize(5.);
+}
+
+void Graphics::AddPoint(const Point &point) {
+    points.push_back(point);
+}
+
+void Graphics::Clear() {
+    points.clear();
 }
 
 void Graphics::DrawAxis() {
@@ -57,10 +67,26 @@ void Graphics::DrawAxis() {
     glEnd();
 }
 
+void Graphics::DrawPoint(double x, double y, double z) {
+    glColor3f(.0, .0, .0);
+    
+    glBegin(GL_POINTS);
+    glVertex3f(x, y, z);
+    glEnd();
+}
+
+void Graphics::DrawPoint(const Point &point) {
+    DrawPoint(point.x, point.y, point.z);
+}
+
 void Graphics::Update() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     DrawAxis();
+
+    for(const Point &point : points) {
+        DrawPoint(point);
+    }
 
     glFlush();
     glutSwapBuffers();

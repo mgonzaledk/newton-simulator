@@ -16,17 +16,20 @@ double Vector3::Module() const {
     #undef POW
 }
 
-double Vector3::operator[](int coord) {
+#include <iostream>
+
+double &Vector3::operator[](int coord) {
     if(
         coord > 2 &&
-        (coord != 'x' || coord != 'y' || coord != 'z')
+        coord != 120 && coord != 121 && coord != 122 &&
+        coord != 88 && coord != 89 && coord != 90
     ) {
         throw BadArgumentException;
     }
 
     switch(coord) {
-        case 0: case 'x': return x;
-        case 1: case 'y': return y;
+        case 0: case 88: case 120: return x;
+        case 1: case 89: case 121: return y;
     }
 
     return z;

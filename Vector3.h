@@ -11,7 +11,7 @@ class Vector3 {
 
         double Module() const;
 
-        double operator[](int coord);
+        double &operator[](int coord);
         Vector3 operator+(const Vector3 &vector);
         Vector3 operator-(const Vector3 &vector);
         Vector3 operator*(double constant);

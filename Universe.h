@@ -22,7 +22,7 @@ class Universe {
 
         void AddParticle(const Particle &particle);
 
-        void UpdateParticles(double multiplier = 1);
+        void UpdateParticles(double multiplier = 3);
         void Loop();
 };
 

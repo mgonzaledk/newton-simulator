@@ -22,4 +22,9 @@ const double C_EARTH_MASS = 5.9736E24;
 const double C_EARTH_RADIUS = 147.09E9;
 const double C_EARTH_VELOCITY = 30.29E3;
 
+// Luna.
+const double C_MOON_MASS = 7.3477E22;
+const double C_MOON_RADIUS = 385000000;
+const double C_MOON_VELOCITY = 1023;
+
 #endif

@@ -73,6 +73,8 @@ void Universe::UpdateParticles(double multiplier) {
         
         particles[i] = particles[i] + (sum[0] + sum[1] * 2 + sum[2] * 2 + sum[3]) * (multiplier / 6);
     }
+
+    UpdateAxisView();
 }
 
 void Universe::Loop() {
@@ -88,6 +90,18 @@ void Universe::Loop() {
 
         if(currentTime - beforeTime > waitTime) {
             beforeTime = currentTime;
+
+            Graphics::Clear();
+
+            for(const Particle &particle : particles) {
+                Vector3 location = particle.GetLocation();
+                location['x'] = 2. * ((location['x'] - minAxisX) / (maxAxisX - minAxisX)) - 1.;
+                location['y'] = 2. * ((location['y'] - minAxisY) / (maxAxisY - minAxisY)) - 1.;
+                location['z'] = 2. * ((location['z'] - minAxisZ) / (maxAxisZ - minAxisZ)) - 1.;
+
+                Graphics::AddPoint(Graphics::Point(location['x'], location['y'], location['z']));
+            }
+
             Graphics::Update();
         }
 

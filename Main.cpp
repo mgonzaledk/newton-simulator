@@ -26,6 +26,16 @@ int main(int argc, char **argv) {
         )
     );
 
+    /* Añadir partícula: LUNA. */
+    universe.AddParticle(
+        Particle(
+            Vector3(C_SUN_RADIUS + C_EARTH_RADIUS + C_MOON_RADIUS, .0, .0),
+            Vector3(.0, C_SUN_RADIUS + C_EARTH_VELOCITY + C_MOON_VELOCITY, .0),
+            C_MOON_MASS,
+            1
+        )
+    );
+
     universe.Loop();
     return 0;
 }
