@@ -28,7 +28,7 @@ class Graphics {
         static void Clear();
 
         static void DrawAxis();
-        static void DrawPoint(double x, double y, double z);
+        static void DrawPoint(double x, double y, double z, double r, double g, double b);
         static void DrawPoint(const Point &point);
 
         static void Update();

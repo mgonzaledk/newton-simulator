@@ -67,8 +67,8 @@ void Graphics::DrawAxis() {
     glEnd();
 }
 
-void Graphics::DrawPoint(double x, double y, double z) {
-    glColor3f(.0, .0, .0);
+void Graphics::DrawPoint(double x, double y, double z, double r, double g, double b) {
+    glColor3f(r, g, b);
     
     glBegin(GL_POINTS);
     glVertex3f(x, y, z);
@@ -76,7 +76,7 @@ void Graphics::DrawPoint(double x, double y, double z) {
 }
 
 void Graphics::DrawPoint(const Point &point) {
-    DrawPoint(point.x, point.y, point.z);
+    DrawPoint(point.x, point.y, point.z, point.r, point.g, point.b);
 }
 
 void Graphics::Update() {
