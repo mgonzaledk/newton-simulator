@@ -99,7 +99,14 @@ void Universe::Loop() {
                 location['y'] = 2. * ((location['y'] - minAxisY) / (maxAxisY - minAxisY)) - 1.;
                 location['z'] = 2. * ((location['z'] - minAxisZ) / (maxAxisZ - minAxisZ)) - 1.;
 
-                Graphics::AddPoint(Graphics::Point(location['x'], location['y'], location['z']));
+                Vector3 color = particle.GetColor();
+
+                Graphics::AddPoint(
+                    Graphics::Point(
+                        location['x'], location['y'], location['z'],
+                        color[0], color[1], color[2]
+                    )
+                );
             }
 
             Graphics::Update();
