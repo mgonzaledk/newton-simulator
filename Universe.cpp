@@ -33,13 +33,18 @@ Universe::Universe(unsigned int width, unsigned int height) {
     minAxisZ = -.1, maxAxisZ = .1;
 }
 
+void Universe::AddParticle(const Particle &particle) {
+    particles.push_back(particle);
+    UpdateAxisView();
+}
+
 void Universe::UpdateParticles(double multiplier) {
     std::vector<Vector3> acceleration;
 
     for(size_t i = 0; i < particles.size(); ++i) {
         acceleration.push_back(Vector3());
 
-        for(size_t j = 0; i < particles.size(); ++j) {
+        for(size_t j = 0; j < particles.size(); ++j) {
             if(i == j) continue;
 
             acceleration[i] += 

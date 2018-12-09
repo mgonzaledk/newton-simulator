@@ -20,6 +20,8 @@ class Universe {
         Universe();
         Universe(unsigned int width, unsigned int height);
 
+        void AddParticle(const Particle &particle);
+
         void UpdateParticles(double multiplier = 1);
         void Loop();
 };
