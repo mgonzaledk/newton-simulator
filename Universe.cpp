@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <chrono>
 #include <cmath>
 
@@ -38,30 +39,48 @@ void Universe::AddParticle(const Particle &particle) {
     UpdateAxisView();
 }
 
+#include <iostream>
+
 void Universe::UpdateParticles(double multiplier) {
     std::vector<Vector3> acceleration;
 
+#if 1
     for(size_t i = 0; i < particles.size(); ++i) {
         acceleration.push_back(Vector3());
 
         for(size_t j = 0; j < particles.size(); ++j) {
             if(i == j) continue;
 
-            acceleration[i] += 
-                (particles[j].GetLocation() - particles[j].GetLocation()) *
-                (
-                    ((1 / particles[i].GetMass()) * (1 / (4 * C_PI * C_K)) *
-                    particles[i].GetCharge() * particles[j].GetCharge()
-                ) / std::pow(
-                    (particles[i].GetLocation() - particles[j].GetLocation()).Module(),
-                    1.5
-                ));
-            
-            acceleration[i] +=
-                (particles[j].GetLocation() - particles[i].GetLocation()) *
-                (C_G * particles[j].GetMass() / std::pow((particles[i].GetLocation() - particles[j].GetLocation()).Module(), 1.5));
+            Vector3 t1 = particles[j].GetLocation() - particles[i].GetLocation();
+            double t2 = std::pow(
+                (particles[i].GetLocation() - particles[j].GetLocation()).Module(),
+                1.5
+            );
+
+            acceleration[i] += t1 * (((1 / particles[i].GetMass()) * (1 / (4 * C_PI * C_K)) * particles[i].GetCharge() * particles[j].GetCharge()) / t2);
+            acceleration[i] += t1 * (C_G * particles[j].GetMass() / t2);
         }
     }
+#else
+    size_t index = 0;
+
+    for(const Particle &i : particles) {
+        acceleration.push_back(Vector3());
+        
+        std::for_each(particles.cbegin(), particles.cend(), [&](const Particle &j) {
+            Vector3 t1 = j.GetLocation() - i.GetLocation();
+            double t2 = std::pow(
+                (i.GetLocation() - j.GetLocation()).Module(),
+                1.5
+            );
+
+            acceleration[index] += t1 * (((1 / i.GetMass()) * (1 / (4 * C_PI * C_K)) * i.GetCharge() * j.GetCharge()) / t2);
+            acceleration[index] += t1 * (C_G * j.GetMass() / t2);
+        });
+
+        ++index;
+    }
+#endif
 
     for(size_t i = 0; i < particles.size(); ++i) {
         Particle sum[4];
