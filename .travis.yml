@@ -10,8 +10,7 @@ before_install:
   - sudo apt-get update -qq
 
 install: 
-  - sudo apt install -y mesa-utils freeglut3-dev
-  - sudo apt-get install -qq g++-6
+  - sudo apt install -y -qq mesa-utils freeglut3-dev g++-6
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
 
 before_script:
@@ -19,4 +18,4 @@ before_script:
   - cd Build
   - cmake ..
 
-script: make && ./newton-simulator
+script: make
