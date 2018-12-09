@@ -14,14 +14,11 @@ class Universe {
         double minAxisX, minAxisY, minAxisZ;
         double maxAxisX, maxAxisY, maxAxisZ;
 
-        void DrawAxis();
-        void UpdateDraw();
-
     public:
         Universe();
         Universe(unsigned int width, unsigned int height);
 
-        void DrawLoop();
+        void Loop();
 };
 
 #endif

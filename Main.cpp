@@ -6,6 +6,6 @@ int main(int argc, char **argv) {
     Universe universe;
     (void)argc, (void)argv;
 
-    universe.DrawLoop();
+    universe.Loop();
     return 0;
 }
