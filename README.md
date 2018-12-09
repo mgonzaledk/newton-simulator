@@ -9,6 +9,10 @@ Newtonian celestial bodies simulator.
 [1]:https://en.wikipedia.org/wiki/N-body_simulation
 
 ## How to compile?
+You need install next libraries: ```sudo apt install -y mesa-utils freeglut3-dev```
+- GL
+- GLUT
+
 Clone repository:
 ```git clone https://github.com/mgonzaledk/newton-simulator```
 
@@ -23,6 +27,4 @@ Just do it:
 ```./newton-simulator```
 
 ## Other considerations
-Please, follow code of conduct and follow and read guidelines.
-
-If you have a trouble, please, consider opening an issue and follow templates.
+Please, follow code of conduct and read guidelines. If you have a trouble, consider opening an issue and fill template card.
