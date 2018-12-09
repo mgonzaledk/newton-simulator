@@ -14,6 +14,8 @@ class Universe {
         double minAxisX, minAxisY, minAxisZ;
         double maxAxisX, maxAxisY, maxAxisZ;
 
+        void UpdateAxisView();
+
     public:
         Universe();
         Universe(unsigned int width, unsigned int height);

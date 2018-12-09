@@ -5,6 +5,22 @@
 
 #include "Universe.h"
 
+void Universe::UpdateAxisView() {
+    for(size_t i = 0; i < particles.size(); ++i) {
+        for(size_t j = 0; j < 3; ++j) {
+            if(std::fabs(particles[i].GetLocation()[j]) > maxAxisX) {
+                maxAxisX = 1.2 * std::fabs(particles[i].GetLocation()[j]);
+            }
+        }
+    }
+
+    minAxisX = -maxAxisX;
+    minAxisY = minAxisX;
+    maxAxisY = maxAxisX;
+    minAxisZ = minAxisX;
+    maxAxisZ = maxAxisX;
+}
+
 Universe::Universe() {
     Universe(600, 600);
 }
