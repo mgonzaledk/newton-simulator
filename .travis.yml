@@ -1,11 +1,16 @@
 language: cpp
 dist: xenial
 
+addons:
+  apt:
+    update: true
+
 compiler:
   - gcc
   - clang
 
 before_script:
+  - sudo apt install -y mesa-utils freeglut3-dev
   - mkdir Build
   - cd Build
   - cmake ..
