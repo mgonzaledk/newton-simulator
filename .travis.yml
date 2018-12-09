@@ -1,7 +1,12 @@
-addons:
-  apt:
-    sources:
-      - george-edison55-precise-backports
-    packages:
-      - cmake-data
-      - cmake
+language: cpp
+
+compiler:
+  - gcc
+  - clang
+
+before_script:
+  - mkdir Build
+  - cd Build
+  - cmake ..
+
+script: make && ./newton-simulator
