@@ -35,6 +35,23 @@ void Graphics::Keyboard(unsigned char key, int x, int y) {
     }
 }
 
+void Graphics::RightMouseButton(int x, int y) {
+    glRotatef(x / 100., .0, -x * ((27273. / 180.) / 7.72), .0);
+    glRotatef(y / 100., -y * ((27273. / 180.) / 7.72), .0, .0);
+}
+
+void Graphics::Mouse(int button, int state, int x, int y) {
+    (void)x, (void)y;
+
+    if(state == GLUT_DOWN) {
+        if(button == GLUT_RIGHT_BUTTON) {
+            glutMotionFunc(Graphics::RightMouseButton);
+        } else if(button == GLUT_LEFT_BUTTON) {
+            // XXX.
+        }
+    }
+}
+
 void Graphics::AddPoint(const Point &point) {
     points.push_back(point);
 }
@@ -91,7 +108,7 @@ void Graphics::DrawPoint(const Point &point) {
 
 void Graphics::Timer(int iter) {
     glutPostRedisplay();
-    
+
     // 1000ms / 6ms = 166 fps
     glutTimerFunc(6, Graphics::Timer, iter + 1);
 }

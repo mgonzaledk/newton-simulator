@@ -27,6 +27,8 @@ class Graphics {
 
         static void Reshape(int x, int y);
         static void Keyboard(unsigned char key, int x, int y);
+        static void RightMouseButton(int x, int y);
+        static void Mouse(int button, int state, int x, int y);
     
     public:
         static std::vector<Point> points;
@@ -71,6 +73,7 @@ void Graphics::Init(unsigned int width, unsigned int height,
     glutDisplayFunc(Graphics::Update<T>);
     glutReshapeFunc(Graphics::Reshape);
     glutKeyboardFunc(Graphics::Keyboard);
+    glutMouseFunc(Graphics::Mouse);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glClearColor(.0, .0, .0, .0);
