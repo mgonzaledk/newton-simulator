@@ -16,8 +16,6 @@ double Vector3::Module() const {
     #undef POW
 }
 
-#include <iostream>
-
 double &Vector3::operator[](int coord) {
     if(
         coord > 2 &&
@@ -68,4 +66,7 @@ VECTOR3_OPERATOR_VASSIGN(-)
 VECTOR3_OPERATOR_CASSIGN(*)
 VECTOR3_OPERATOR_CASSIGN(/)
 
+#undef VECTOR3_OPERATOR_VASSIGN
+#undef VECTOR3_OPERATOR_CASSIGN
+    
 Vector3::~Vector3() {}
