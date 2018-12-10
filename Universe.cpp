@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <chrono>
 #include <cmath>
 
 #include "Graphics.h"
@@ -23,15 +22,23 @@ void Universe::UpdateAxisView() {
 }
 
 Universe::Universe() {
-    Universe(600, 600);
+    *this = Universe(600, 600);
 }
 
 Universe::Universe(unsigned int width, unsigned int height) {
-    Graphics::Init(width, height);
-
     minAxisX = minAxisY = 0;
     maxAxisX = maxAxisY = 0;
     minAxisZ = -.1, maxAxisZ = .1;
+
+    this->width = width;
+    this->height = height;
+}
+
+void Universe::Init() {
+    std::function<void(void)> callback =
+        std::bind(&Universe::Loop, this);
+
+    Graphics::Init<void(void)>(width, height, callback);
 }
 
 void Universe::AddParticle(const Particle &particle) {
@@ -39,12 +46,9 @@ void Universe::AddParticle(const Particle &particle) {
     UpdateAxisView();
 }
 
-#include <iostream>
-
-void Universe::UpdateParticles(double multiplier) {
+void Universe::UpdateParticles() {
     std::vector<Vector3> acceleration;
 
-#if 1
     for(size_t i = 0; i < particles.size(); ++i) {
         acceleration.push_back(Vector3());
 
@@ -61,76 +65,43 @@ void Universe::UpdateParticles(double multiplier) {
             acceleration[i] += t1 * (C_G * particles[j].GetMass() / t2);
         }
     }
-#else
-    size_t index = 0;
-
-    for(const Particle &i : particles) {
-        acceleration.push_back(Vector3());
-        
-        std::for_each(particles.cbegin(), particles.cend(), [&](const Particle &j) {
-            Vector3 t1 = j.GetLocation() - i.GetLocation();
-            double t2 = std::pow(
-                (i.GetLocation() - j.GetLocation()).Module(),
-                1.5
-            );
-
-            acceleration[index] += t1 * (((1 / i.GetMass()) * (1 / (4 * C_PI * C_K)) * i.GetCharge() * j.GetCharge()) / t2);
-            acceleration[index] += t1 * (C_G * j.GetMass() / t2);
-        });
-
-        ++index;
-    }
-#endif
 
     for(size_t i = 0; i < particles.size(); ++i) {
         Particle sum[4];
 
         sum[0] = particles[i].ApplyAcceleration(acceleration[i]);
-        sum[1] = (particles[i] + sum[0] * (multiplier / 2)).ApplyAcceleration(acceleration[i]);
-        sum[2] = (particles[i] + sum[1] * (multiplier / 2)).ApplyAcceleration(acceleration[i]);
-        sum[3] = (particles[i] + sum[2] * multiplier).ApplyAcceleration(acceleration[i]);
+        sum[1] = (particles[i] + sum[0]).ApplyAcceleration(acceleration[i]);
+        sum[2] = (particles[i] + sum[1]).ApplyAcceleration(acceleration[i]);
+        sum[3] = (particles[i] + sum[2]).ApplyAcceleration(acceleration[i]);
         
-        particles[i] = particles[i] + (sum[0] + sum[1] * 2 + sum[2] * 2 + sum[3]) * (multiplier / 6);
+        particles[i] = particles[i] + (sum[0] + sum[1] * 2 + sum[2] * 2 + sum[3]);
     }
 
     UpdateAxisView();
 }
 
 void Universe::Loop() {
-    std::chrono::duration<int, std::milli> waitTime =
-        std::chrono::duration<int, std::milli>(15);
+    auto begin = std::chrono::high_resolution_clock::now();
 
-    std::chrono::system_clock::time_point currentTime;
-    std::chrono::system_clock::time_point beforeTime =
-        std::chrono::system_clock::now();
+    Graphics::Clear();
 
-    do {
-        currentTime = std::chrono::system_clock::now();
+    for(const Particle &particle : particles) {
+        Vector3 location = particle.GetLocation();
+        location['x'] = 2. * ((location['x'] - minAxisX) / (maxAxisX - minAxisX)) - 1.;
+        location['y'] = 2. * ((location['y'] - minAxisY) / (maxAxisY - minAxisY)) - 1.;
+        location['z'] = 2. * ((location['z'] - minAxisZ) / (maxAxisZ - minAxisZ)) - 1.;
 
-        if(currentTime - beforeTime > waitTime) {
-            beforeTime = currentTime;
+        Vector3 color = particle.GetColor();
 
-            Graphics::Clear();
+        Graphics::AddPoint(
+            Graphics::Point(
+                location['x'], location['y'], location['z'],
+                color[0], color[1], color[2]
+            )
+        );
+    }
 
-            for(const Particle &particle : particles) {
-                Vector3 location = particle.GetLocation();
-                location['x'] = 2. * ((location['x'] - minAxisX) / (maxAxisX - minAxisX)) - 1.;
-                location['y'] = 2. * ((location['y'] - minAxisY) / (maxAxisY - minAxisY)) - 1.;
-                location['z'] = 2. * ((location['z'] - minAxisZ) / (maxAxisZ - minAxisZ)) - 1.;
+    UpdateParticles();
 
-                Vector3 color = particle.GetColor();
-
-                Graphics::AddPoint(
-                    Graphics::Point(
-                        location['x'], location['y'], location['z'],
-                        color[0], color[1], color[2]
-                    )
-                );
-            }
-
-            Graphics::Update();
-        }
-
-        UpdateParticles();
-    } while(1);
+    auto end = std::chrono::high_resolution_clock::now();
 }

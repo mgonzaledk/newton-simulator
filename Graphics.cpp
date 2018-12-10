@@ -1,30 +1,6 @@
-#include <cstring>
-
-#include <GL/gl.h>
-#include <GL/freeglut.h>
-
 #include "Graphics.h"
 
 std::vector<Graphics::Point> Graphics::points;
-
-void Graphics::Init(unsigned int width, unsigned int height) {
-    // Argumentos específicos de OPENGL.
-    char *argv[1];
-    int argc = 1;
-
-    argv[0] = strdup("Graph");
-    
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glutInitWindowSize(width, height);
-
-    glutCreateWindow("newton-simulator");
-
-    glMatrixMode(GL_PROJECTION);
-    glClearColor(1, 1, 1, .0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glPointSize(5.);
-}
 
 void Graphics::AddPoint(const Point &point) {
     points.push_back(point);
@@ -79,15 +55,9 @@ void Graphics::DrawPoint(const Point &point) {
     DrawPoint(point.x, point.y, point.z, point.r, point.g, point.b);
 }
 
-void Graphics::Update() {
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    DrawAxis();
-
-    for(const Point &point : points) {
-        DrawPoint(point);
-    }
-
-    glFlush();
-    glutSwapBuffers();
+void Graphics::Timer(int iter) {
+    glutPostRedisplay();
+    
+    // 1000ms / 6ms = 166 fps
+    glutTimerFunc(6, Graphics::Timer, iter + 1);
 }

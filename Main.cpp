@@ -28,6 +28,8 @@ int main(int argc, char **argv) {
         )
     );
 
+#if 0
+
     /* Añadir partícula: VENUS. */
     universe.AddParticle(
         Particle(
@@ -94,8 +96,6 @@ int main(int argc, char **argv) {
         )
     );
 
-#if 0
-
     /* Añadir partícula: URANO. */
     universe.AddParticle(
         Particle(
@@ -131,6 +131,6 @@ int main(int argc, char **argv) {
 
 #endif
 
-    universe.Loop();
+    universe.Init();
     return 0;
 }

@@ -1,6 +1,7 @@
 #ifndef UNIVERSE_H
 #define UNIVERSE_H
 
+#include <chrono>
 #include <vector>
 
 #include "Vector3.h"
@@ -14,15 +15,19 @@ class Universe {
         double minAxisX, minAxisY, minAxisZ;
         double maxAxisX, maxAxisY, maxAxisZ;
 
+        unsigned int width, height;
+
         void UpdateAxisView();
 
     public:
         Universe();
         Universe(unsigned int width, unsigned int height);
 
+        void Init();
+
         void AddParticle(const Particle &particle);
 
-        void UpdateParticles(double multiplier = 3);
+        void UpdateParticles();
         void Loop();
 };
 
