@@ -5,13 +5,13 @@
 
 class Particle {
     private:
-        Vector3 color;
-
         Vector3 location;
         Vector3 velocity;
 
         double mass;
         double charge;
+    
+        Vector3 color;
 
     public:
         Particle();
