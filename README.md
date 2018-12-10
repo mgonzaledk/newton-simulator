@@ -28,5 +28,7 @@ Create Makefile and compile:
 Just do it:
 ```./newton-simulator```
 
+Move with W, A, S, D, +, - and mouse.
+
 ## Other considerations
 Please, follow code of conduct and read guidelines. If you have a trouble, consider opening an issue and fill template card.
