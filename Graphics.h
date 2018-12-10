@@ -11,18 +11,22 @@
 class Graphics {
     public:
         struct Point {
+            double s;
             double x, y, z;
             double r, g, b;
 
-            Point(double x, double y, double z, double r, double g, double b) :
-                x(x), y(y), z(z), r(r), g(g), b(b) {}
+            Point(double s, double x, double y, double z, double r, double g, double b) :
+                s(s), x(x), y(y), z(z), r(r), g(g), b(b) {}
             
             Point() :
-                x(.0), y(.0), z(.0), r(.0), g(.0), b(.0) {}
+                s(.1), x(.0), y(.0), z(.0), r(.0), g(.0), b(.0) {}
         };
 
     private:
         Graphics() {}
+
+        static void Reshape(int x, int y);
+        static void Keyboard(unsigned char key, int x, int y);
     
     public:
         static std::vector<Point> points;
@@ -38,7 +42,7 @@ class Graphics {
         static void Clear();
 
         static void DrawAxis();
-        static void DrawPoint(double x, double y, double z, double r, double g, double b);
+        static void DrawPoint(double s, double x, double y, double z, double r, double g, double b);
         static void DrawPoint(const Point &point);
 
         template<typename T>
@@ -57,22 +61,22 @@ void Graphics::Init(unsigned int width, unsigned int height,
     Graphics::loop<T> = loop;
 
     // Argumentos específicos de OPENGL.
-    char *argv[1];
-    int argc = 1;
-
-    argv[0] = strdup("Graph");
+    int argc = 0;
     
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInit(&argc, nullptr);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(width, height);
 
     glutCreateWindow("newton-simulator");
     glutDisplayFunc(Graphics::Update<T>);
+    glutReshapeFunc(Graphics::Reshape);
+    glutKeyboardFunc(Graphics::Keyboard);
 
-    glMatrixMode(GL_PROJECTION);
-    glClearColor(1, 1, 1, .0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glPointSize(5.);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glClearColor(.0, .0, .0, .0);
+
+    glLoadIdentity();
+    glTranslatef(0.0, 0.0, -1000.0);
 
     glutTimerFunc(0, Graphics::Timer, 0);
     glutMainLoop();
@@ -80,15 +84,15 @@ void Graphics::Init(unsigned int width, unsigned int height,
 
 template<typename T>
 void Graphics::Update() {
-    glClear(GL_COLOR_BUFFER_BIT);
-
+    glMatrixMode(GL_MODELVIEW);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+ 
     loop<T>();
-    DrawAxis();
 
     for(const Point &point : points) {
         DrawPoint(point);
     }
-
+ 
     glFlush();
     glutSwapBuffers();
 }

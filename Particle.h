@@ -12,14 +12,17 @@ class Particle {
         double charge;
     
         Vector3 color;
+        double size;
 
     public:
         Particle();
         Particle(const Vector3 &location);
         Particle(const Vector3 &location, const Vector3 &velocity, double mass,
-            double charge, const Vector3 &color);
+            double charge, const Vector3 &color, double size);
 
         Vector3 GetColor() const;
+        double GetSize() const;
+
         Vector3 GetLocation() const;
         Vector3 GetVelocity() const;
         double GetMass() const;

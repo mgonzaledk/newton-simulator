@@ -14,6 +14,7 @@ void Universe::UpdateAxisView() {
         }
     }
 
+    maxAxisX /= 64.;
     minAxisX = -maxAxisX;
     minAxisY = minAxisX;
     maxAxisY = maxAxisX;
@@ -22,7 +23,7 @@ void Universe::UpdateAxisView() {
 }
 
 Universe::Universe() {
-    *this = Universe(600, 600);
+    *this = Universe(1024, 800);
 }
 
 Universe::Universe(unsigned int width, unsigned int height) {
@@ -76,8 +77,6 @@ void Universe::UpdateParticles() {
         
         particles[i] = particles[i] + (sum[0] + sum[1] * 2 + sum[2] * 2 + sum[3]);
     }
-
-    UpdateAxisView();
 }
 
 void Universe::Loop() {
@@ -87,14 +86,14 @@ void Universe::Loop() {
 
     for(const Particle &particle : particles) {
         Vector3 location = particle.GetLocation();
-        location['x'] = 2. * ((location['x'] - minAxisX) / (maxAxisX - minAxisX)) - 1.;
-        location['y'] = 2. * ((location['y'] - minAxisY) / (maxAxisY - minAxisY)) - 1.;
-        location['z'] = 2. * ((location['z'] - minAxisZ) / (maxAxisZ - minAxisZ)) - 1.;
+        location['x'] /= 1E10;
+        location['y'] /= 1E10;
 
         Vector3 color = particle.GetColor();
 
         Graphics::AddPoint(
             Graphics::Point(
+                particle.GetSize(),
                 location['x'], location['y'], location['z'],
                 color[0], color[1], color[2]
             )
@@ -104,4 +103,5 @@ void Universe::Loop() {
     UpdateParticles();
 
     auto end = std::chrono::high_resolution_clock::now();
+    (void)begin, (void)end;
 }

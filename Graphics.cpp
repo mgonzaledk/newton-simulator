@@ -2,6 +2,39 @@
 
 std::vector<Graphics::Point> Graphics::points;
 
+void Graphics::Reshape(int width, int height) {
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    gluPerspective(45., (GLdouble)width / (GLdouble)height, .5, 3000.);
+    glMatrixMode(GL_MODELVIEW);
+    glViewport(0, 0, width, height); 
+}
+
+void Graphics::Keyboard(unsigned char key, int x, int y) {
+    (void)x, (void)y;
+
+    if(key == 'w') {
+        // ↑.
+        glTranslatef(.0, -5., .0);
+    } else if(key == 's') {
+        // ↓.
+        glTranslatef(.0, 5., .0);
+    } else if(key == 'a') {
+        // ←.
+        glTranslatef(5., .0, .0);
+    } else if(key == 'd') {
+        // →.
+        glTranslatef(-5., .0, .0);
+    } else if(key == '+') {
+        // Zoom +.
+        glTranslatef(.0, .0, 5.);
+    } else if(key == '-') {
+        // Zoom -.
+        glTranslatef(.0, .0, -5.);
+    }
+}
+
 void Graphics::AddPoint(const Point &point) {
     points.push_back(point);
 }
@@ -43,16 +76,17 @@ void Graphics::DrawAxis() {
     glEnd();
 }
 
-void Graphics::DrawPoint(double x, double y, double z, double r, double g, double b) {
+void Graphics::DrawPoint(double s, double x, double y, double z, double r, double g, double b) {
     glColor3f(r, g, b);
-    
-    glBegin(GL_POINTS);
-    glVertex3f(x, y, z);
-    glEnd();
+
+    glPushMatrix();
+        glTranslatef(x, y, z);
+        glutSolidSphere(s, 20, 40);
+    glPopMatrix();
 }
 
 void Graphics::DrawPoint(const Point &point) {
-    DrawPoint(point.x, point.y, point.z, point.r, point.g, point.b);
+    DrawPoint(point.s, point.x, point.y, point.z, point.r, point.g, point.b);
 }
 
 void Graphics::Timer(int iter) {

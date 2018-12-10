@@ -13,7 +13,8 @@ int main(int argc, char **argv) {
             Vector3(.0, C_SUN_VELOCITY, .0),
             C_SUN_MASS,
             0,
-            Vector3(1., .0, .0)
+            Vector3(1., .0, .0),
+            109.
         )
     );
 
@@ -24,11 +25,10 @@ int main(int argc, char **argv) {
             Vector3(.0, C_SUN_RADIUS + C_MERCURY_VELOCITY, .0),
             C_MERCURY_MASS,
             0,
-            Vector3(.0, .0, .0)
+            Vector3(1., 1., 1.),
+            .4
         )
     );
-
-#if 0
 
     /* Añadir partícula: VENUS. */
     universe.AddParticle(
@@ -37,7 +37,8 @@ int main(int argc, char **argv) {
             Vector3(.0, C_SUN_VELOCITY + C_VENUS_VELOCITY, .0),
             C_VENUS_MASS,
             0,
-            Vector3(.0, .0, .0)
+            Vector3(1., 1., 1.),
+            1.
         )
     );
 
@@ -48,7 +49,8 @@ int main(int argc, char **argv) {
             Vector3(.0, C_SUN_VELOCITY + C_EARTH_VELOCITY, .0),
             C_EARTH_MASS,
             0,
-            Vector3(.0, 1., 1.)
+            Vector3(.0, 1., 1.),
+            1.
         )
     );
 
@@ -59,7 +61,8 @@ int main(int argc, char **argv) {
             Vector3(.0, C_SUN_VELOCITY + C_EARTH_VELOCITY + C_MOON_VELOCITY, .0),
             C_MOON_MASS,
             0,
-            Vector3(.0, .0, .5)
+            Vector3(.0, .0, .5),
+            .3
         )
     );
 
@@ -70,7 +73,8 @@ int main(int argc, char **argv) {
             Vector3(.0, C_SUN_VELOCITY + C_MARS_VELOCITY, .0),
             C_MARS_MASS,
             0,
-            Vector3(.0, .0, .0)
+            Vector3(1., 1., 1.),
+            .5
         )
     );
 
@@ -81,7 +85,8 @@ int main(int argc, char **argv) {
             Vector3(.0, C_SUN_VELOCITY + C_JUPITER_VELOCITY, .0),
             C_JUPITER_MASS,
             0,
-            Vector3(.0, .0, .0)
+            Vector3(1., 1., 1.),
+            30.
         )
     );
 
@@ -92,7 +97,8 @@ int main(int argc, char **argv) {
             Vector3(.0, C_SUN_VELOCITY + C_SATURN_VELOCITY, .0),
             C_SATURN_MASS,
             0,
-            Vector3(.0, .0, .0)
+            Vector3(1., 1., 1.),
+            10.
         )
     );
 
@@ -103,7 +109,8 @@ int main(int argc, char **argv) {
             Vector3(.0, C_SUN_VELOCITY + C_URANUS_VELOCITY, .0),
             C_URANUS_MASS,
             0,
-            Vector3(.0, .0, .0)
+            Vector3(1., 1., 1.),
+            4.
         )
     );
 
@@ -114,7 +121,8 @@ int main(int argc, char **argv) {
             Vector3(.0, C_SUN_VELOCITY + C_NEPTUNE_VELOCITY, .0),
             C_NEPTUNE_MASS,
             0,
-            Vector3(.0, .0, .0)
+            Vector3(1., 1., 1.),
+            2.
         )
     );
 
@@ -125,11 +133,10 @@ int main(int argc, char **argv) {
             Vector3(.0, C_SUN_VELOCITY + C_PLUTO_VELOCITY, .0),
             C_PLUTO_MASS,
             0,
-            Vector3(.0, .0, .0)
+            Vector3(1., 1., 1.),
+            .2
         )
     );
-
-#endif
 
     universe.Init();
     return 0;
